@@ -13,4 +13,8 @@ class Repository {
     suspend fun getAffirmation(): Response<Affirmation> {
         return RetrofitInstance.api.getAffirmation()
     }
+
+    suspend fun getPost2(number: Int): Response<Post> {
+        return RetrofitInstance.api.getPost2(number)
+    }
 }
