@@ -29,4 +29,11 @@ class Repository {
     ): Response<List<Post>> {
         return RetrofitInstance.api.getCustomQueryPosts(userId, sort, order)
     }
+
+    suspend fun getCustomQueryMapPosts(
+        userId: Int,
+        options: Map<String, String>
+    ): Response<List<Post>> {
+        return RetrofitInstance.api.getCustomQueryMapPosts(userId, options)
+    }
 }

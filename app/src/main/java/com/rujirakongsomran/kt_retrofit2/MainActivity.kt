@@ -76,12 +76,39 @@ class MainActivity : AppCompatActivity() {
 //            })
 //        }
 
+//        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+//        binding.button.setOnClickListener {
+//            val myNumber = binding.etNumber.text.toString()
+//            viewModel.getCustomQueryPosts(Integer.parseInt(myNumber), "id", "asc")
+//
+//            viewModel.myCustomQueryPosts.observe(this, Observer { response ->
+//                if (response.isSuccessful) {
+//                    binding.textView.text = response.body().toString()
+//
+//                    response.body()?.forEach {
+//                        Log.d("Response", it.userId.toString())
+//                        Log.d("Response", it.id.toString())
+//                        Log.d("Response", it.title)
+//                        Log.d("Response", it.body)
+//                        Log.d("Response", "----------------")
+//                    }
+//                } else {
+//                    binding.textView.text = response.code().toString()
+//                }
+//            })
+//        }
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        val options: HashMap<String, String> = HashMap()
+        options["_sort"] = "id"
+        options["_order"] = "asc"
+
         binding.button.setOnClickListener {
             val myNumber = binding.etNumber.text.toString()
-            viewModel.getCustomQueryPosts(Integer.parseInt(myNumber), "id", "asc")
+            viewModel.getCustomQueryMapPosts(Integer.parseInt(myNumber), options)
 
-            viewModel.myCustomQueryPosts.observe(this, Observer { response ->
+            viewModel.myCustomQueryMapPosts.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     binding.textView.text = response.body().toString()
 
