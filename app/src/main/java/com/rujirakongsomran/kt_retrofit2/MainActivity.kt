@@ -53,12 +53,35 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            })
 //        }
+
+//        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+//        binding.button.setOnClickListener {
+//            val myNumber = binding.etNumber.text.toString()
+//            viewModel.getCustomPosts(Integer.parseInt(myNumber))
+//
+//            viewModel.myCustomPosts.observe(this, Observer { response ->
+//                if (response.isSuccessful) {
+//                    binding.textView.text = response.body().toString()
+//
+//                    response.body()?.forEach {
+//                        Log.d("Response", it.userId.toString())
+//                        Log.d("Response", it.id.toString())
+//                        Log.d("Response", it.title)
+//                        Log.d("Response", it.body)
+//                        Log.d("Response", "----------------")
+//                    }
+//                } else {
+//                    binding.textView.text = response.code().toString()
+//                }
+//            })
+//        }
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         binding.button.setOnClickListener {
             val myNumber = binding.etNumber.text.toString()
-            viewModel.getCustomPosts(Integer.parseInt(myNumber))
+            viewModel.getCustomQueryPosts(Integer.parseInt(myNumber), "id", "asc")
 
-            viewModel.myCustomPosts.observe(this, Observer { response ->
+            viewModel.myCustomQueryPosts.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     binding.textView.text = response.body().toString()
 

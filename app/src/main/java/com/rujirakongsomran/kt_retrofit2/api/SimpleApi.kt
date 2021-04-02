@@ -24,4 +24,14 @@ interface SimpleApi {
     suspend fun getCustomPosts(
         @Query("userId") userId: Int
     ): Response<List<Post>>
+
+    // https://jsonplaceholder.typicode.com/posts?userId=3&_sort=id&_order=desc
+    @GET("posts")
+    suspend fun getCustomQueryPosts(
+        @Query("userId") userId: Int,
+        @Query("_sort") sort: String,
+        @Query("_order") order: String
+    ): Response<List<Post>>
+
+
 }
