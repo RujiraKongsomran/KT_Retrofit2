@@ -38,16 +38,37 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        })
 
+//        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+//        binding.button.setOnClickListener {
+//            val myNumber = binding.etNumber.text.toString()
+//            viewModel.getPost2(Integer.parseInt(myNumber))
+//
+//            viewModel.myResponse2.observe(this, Observer { response ->
+//                if (response.isSuccessful) {
+//
+//                    binding.textView.text = response.body().toString()
+//
+//                } else {
+//                    binding.textView.text = response.code().toString()
+//                }
+//            })
+//        }
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         binding.button.setOnClickListener {
             val myNumber = binding.etNumber.text.toString()
-            viewModel.getPost2(Integer.parseInt(myNumber))
+            viewModel.getCustomPosts(Integer.parseInt(myNumber))
 
-            viewModel.myResponse2.observe(this, Observer { response ->
+            viewModel.myCustomPosts.observe(this, Observer { response ->
                 if (response.isSuccessful) {
-
                     binding.textView.text = response.body().toString()
 
+                    response.body()?.forEach {
+                        Log.d("Response", it.userId.toString())
+                        Log.d("Response", it.id.toString())
+                        Log.d("Response", it.title)
+                        Log.d("Response", it.body)
+                        Log.d("Response", "----------------")
+                    }
                 } else {
                     binding.textView.text = response.code().toString()
                 }

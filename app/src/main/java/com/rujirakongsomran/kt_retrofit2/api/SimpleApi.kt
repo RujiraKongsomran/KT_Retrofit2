@@ -5,6 +5,7 @@ import com.rujirakongsomran.kt_retrofit2.model.Post
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface SimpleApi {
     @GET("posts/1")
@@ -17,4 +18,10 @@ interface SimpleApi {
     suspend fun getPost2(
         @Path("postNumber") number: Int
     ): Response<Post>
+
+    // https://jsonplaceholder.typicode.com/posts?userId=3
+    @GET("posts")
+    suspend fun getCustomPosts(
+        @Query("userId") userId: Int
+    ): Response<List<Post>>
 }
