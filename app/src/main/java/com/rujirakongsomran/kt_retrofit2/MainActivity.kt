@@ -2,9 +2,11 @@ package com.rujirakongsomran.kt_retrofit2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.rujirakongsomran.kt_retrofit2.adapter.MyAdapter
 import com.rujirakongsomran.kt_retrofit2.databinding.ActivityMainBinding
 import com.rujirakongsomran.kt_retrofit2.repository.Repository
 
@@ -13,15 +15,29 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
 
+    private val myAdapter by lazy { MyAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupRecyclerView()
+
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.getCustomQueryPosts(2, "id", "desc")
+        viewModel.myCustomQueryPosts.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                response.body()?.let { myAdapter.setData(it) }
+            } else {
+                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+            }
+        })
 
+        //region noted
 //        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 //        viewModel.getPost()
 //        viewModel.myResponse.observe(this, Observer { response ->
@@ -98,31 +114,36 @@ class MainActivity : AppCompatActivity() {
 //            })
 //        }
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-        val options: HashMap<String, String> = HashMap()
-        options["_sort"] = "id"
-        options["_order"] = "asc"
+//        val options: HashMap<String, String> = HashMap()
+//        options["_sort"] = "id"
+//        options["_order"] = "asc"
+//
+//        binding.button.setOnClickListener {
+//            val myNumber = binding.etNumber.text.toString()
+//            viewModel.getCustomQueryMapPosts(Integer.parseInt(myNumber), options)
+//
+//            viewModel.myCustomQueryMapPosts.observe(this, Observer { response ->
+//                if (response.isSuccessful) {
+//                    binding.textView.text = response.body().toString()
+//
+//                    response.body()?.forEach {
+//                        Log.d("Response", it.userId.toString())
+//                        Log.d("Response", it.id.toString())
+//                        Log.d("Response", it.title)
+//                        Log.d("Response", it.body)
+//                        Log.d("Response", "----------------")
+//                    }
+//                } else {
+//                    binding.textView.text = response.code().toString()
+//                }
+//            })
+//        }
+        //endregion
+    }
 
-        binding.button.setOnClickListener {
-            val myNumber = binding.etNumber.text.toString()
-            viewModel.getCustomQueryMapPosts(Integer.parseInt(myNumber), options)
-
-            viewModel.myCustomQueryMapPosts.observe(this, Observer { response ->
-                if (response.isSuccessful) {
-                    binding.textView.text = response.body().toString()
-
-                    response.body()?.forEach {
-                        Log.d("Response", it.userId.toString())
-                        Log.d("Response", it.id.toString())
-                        Log.d("Response", it.title)
-                        Log.d("Response", it.body)
-                        Log.d("Response", "----------------")
-                    }
-                } else {
-                    binding.textView.text = response.code().toString()
-                }
-            })
-        }
+    private fun setupRecyclerView() {
+        binding.recyclerView.adapter = myAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }
