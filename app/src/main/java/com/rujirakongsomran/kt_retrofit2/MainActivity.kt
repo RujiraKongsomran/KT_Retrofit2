@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-        viewModel.getPost()
+        viewModel.getPost("1112222")
         viewModel.myResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
                 Log.d("Main", response.body().toString())
