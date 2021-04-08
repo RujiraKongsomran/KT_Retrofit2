@@ -31,21 +31,32 @@ class MainActivity : AppCompatActivity() {
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
+        viewModel.getPost()
+        viewModel.myResponse.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                Log.d("Main", response.body().toString())
+                Log.d("Main", response.code().toString())
+                Log.d("Main", response.headers().toString())
+            } else {
+                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
         /*JSON*/
         //val myPost = Post(2, 2, "Line Login", "Line SDK")
         //viewModel.pushPost(myPost)
 
         /*FromUrlEncoded*/
-        viewModel.pushPost2(2, 2, "Biw", "Des")
-        viewModel.myResponse.observe(this, Observer { response ->
-            if (response.isSuccessful) {
-                Log.d("Main", response.body().toString())
-                Log.d("Main", response.code().toString())
-                Log.d("Main", response.message())
-            } else {
-                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
-            }
-        })
+//        viewModel.pushPost2(2, 2, "Biw", "Des")
+//        viewModel.myResponse.observe(this, Observer { response ->
+//            if (response.isSuccessful) {
+//                Log.d("Main", response.body().toString())
+//                Log.d("Main", response.code().toString())
+//                Log.d("Main", response.message())
+//            } else {
+//                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+//            }
+//        })
 //        viewModel.getCustomQueryPosts(2, "id", "desc")
 //        viewModel.myCustomQueryPosts.observe(this, Observer { response ->
 //            if (response.isSuccessful) {
