@@ -25,20 +25,29 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
+        //setupRecyclerView()
 
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-        viewModel.getPost("1112222")
-        viewModel.myResponse.observe(this, Observer { response ->
+//        viewModel.getPost("1112222")
+//        viewModel.myResponse.observe(this, Observer { response ->
+//            if (response.isSuccessful) {
+//                Log.d("Main", response.body().toString())
+//                Log.d("Main", response.code().toString())
+//                Log.d("Main", response.headers().toString())
+//            } else {
+//                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+//            }
+//        })
+        viewModel.getAffirmation()
+        viewModel.myResponseAffirmation.observe(this, Observer { response ->
             if (response.isSuccessful) {
-                Log.d("Main", response.body().toString())
-                Log.d("Main", response.code().toString())
-                Log.d("Main", response.headers().toString())
+                Log.d("Response", response.body()?.affirmation.toString())
+                binding.textView.text = response.body()?.affirmation.toString()
             } else {
-                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
+                Log.d("Response", response.errorBody().toString())
             }
         })
 
@@ -172,7 +181,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerView.adapter = myAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+//        binding.recyclerView.adapter = myAdapter
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }
