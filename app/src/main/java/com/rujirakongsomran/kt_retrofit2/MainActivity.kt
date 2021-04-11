@@ -26,10 +26,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //setupRecyclerView()
+        callServiceAffirmation()
+        refreshApp()
 
-        val repository = Repository()
-        val viewModelFactory = MainViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+//        val repository = Repository()
+//        val viewModelFactory = MainViewModelFactory(repository)
+//        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
 //        viewModel.getPost("1112222")
 //        viewModel.myResponse.observe(this, Observer { response ->
@@ -41,15 +43,7 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(this, response.code(), Toast.LENGTH_SHORT).show()
 //            }
 //        })
-        viewModel.getAffirmation()
-        viewModel.myResponseAffirmation.observe(this, Observer { response ->
-            if (response.isSuccessful) {
-                Log.d("Response", response.body()?.affirmation.toString())
-                binding.textView.text = response.body()?.affirmation.toString()
-            } else {
-                Log.d("Response", response.errorBody().toString())
-            }
-        })
+
 
         /*JSON*/
         //val myPost = Post(2, 2, "Line Login", "Line SDK")
@@ -178,6 +172,29 @@ class MainActivity : AppCompatActivity() {
 //            })
 //        }
         //endregion
+    }
+
+    private fun callServiceAffirmation() {
+        val repository = Repository()
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        viewModel.getAffirmation()
+        viewModel.myResponseAffirmation.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                Log.d("Response", response.body()?.affirmation.toString())
+                binding.textView.text = response.body()?.affirmation.toString()
+            } else {
+                Log.d("Response", response.errorBody().toString())
+            }
+        })
+    }
+
+    private fun refreshApp() {
+        binding.srl.setOnRefreshListener {
+            callServiceAffirmation()
+            binding.srl.isRefreshing = false
+        }
     }
 
     private fun setupRecyclerView() {
