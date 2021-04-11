@@ -12,7 +12,8 @@
         android:theme="@style/Theme.KT_Retrofit2">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
